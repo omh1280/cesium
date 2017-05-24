@@ -39,7 +39,7 @@ define([
      * @param {Object} [options.headers] HTTP headers to send with the request, if any.
      * @param {String} [options.overrideMimeType] Overrides the MIME type returned by the server.
      * @param {Request} [options.request] The request object.
-     * @returns {Promise.<Object>} a promise that will resolve to the requested data when loaded.
+     * @returns {Promise.<Object>|undefined} a promise that will resolve to the requested data when loaded. Returns <code>undefined</code> if <code>request.throttle</code> is <code>true</code> and the request does not have high enough priority.
      *
      *
      * @example

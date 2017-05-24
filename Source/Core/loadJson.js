@@ -31,7 +31,7 @@ define([
      * 'Accept: application/json,&#42;&#47;&#42;;q=0.01' is added to the request headers automatically
      * if not specified.
      * @param {Request} [request] The request object.
-     * @returns {Promise.<Object>} a promise that will resolve to the requested data when loaded.
+     * @returns {Promise.<Object>|undefined} a promise that will resolve to the requested data when loaded. Returns <code>undefined</code> if <code>request.throttle</code> is <code>true</code> and the request does not have high enough priority.
      *
      *
      * @example
@@ -60,7 +60,12 @@ define([
             headers.Accept = defaultHeaders.Accept;
         }
 
-        return loadText(url, headers, request).then(function(value) {
+        var textPromise = loadText(url, headers, request);
+        if (!defined(textPromise)) {
+            return undefined;
+        }
+
+        return textPromise.then(function(value) {
             return JSON.parse(value);
         });
     }
