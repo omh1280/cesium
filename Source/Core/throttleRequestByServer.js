@@ -2,11 +2,13 @@
 define([
         '../ThirdParty/Uri',
         '../ThirdParty/when',
-        './defaultValue'
+        './defaultValue',
+        './RequestScheduler'
     ], function(
         Uri,
         when,
-        defaultValue) {
+        defaultValue,
+        RequestScheduler) {
     'use strict';
 
     var activeRequests = {};
@@ -52,9 +54,14 @@ define([
      *     // handle loaded image
      *   });
      * }
-     * 
+     *
      * @see {@link http://wiki.commonjs.org/wiki/Promises/A|CommonJS Promises/A}
      */
+
+    var statistics = {
+        numberOfActiveRequestsEver : 0
+    };
+
     function throttleRequestByServer(url, requestFunction) {
         var server = getServer(url);
 
@@ -64,6 +71,14 @@ define([
         }
 
         activeRequests[server] = activeRequestsForServer + 1;
+
+        if (!RequestScheduler.getStatistics) {
+            RequestScheduler.getStatistics = function() {
+                return statistics;
+            };
+        }
+
+        statistics.numberOfActiveRequestsEver++;
 
         return when(requestFunction(url), function(result) {
             activeRequests[server]--;
