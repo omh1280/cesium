@@ -244,6 +244,14 @@ define([
         this.tileDebugLabelsVisible = false;
 
         /**
+         * Gets or sets the flag to show the optimization info section. This property is observable.
+         *
+         * @type {Boolean}
+         * @default false;
+         */
+        this.optimizationVisible = false;
+
+        /**
          * Gets or sets the JSON for the tileset style.  This property is observable.
          *
          * @type {String}
@@ -256,7 +264,8 @@ define([
         this._tile = undefined;
 
         knockout.track(this, ['performance', 'inspectorVisible', '_statisticsText', '_pickStatisticsText', '_editorError', 'showPickStatistics', 'showStatistics',
-                              'tilesetVisible', 'displayVisible', 'updateVisible', 'loggingVisible', 'styleVisible', 'tileDebugLabelsVisible', 'styleString', '_feature', '_tile']);
+                              'tilesetVisible', 'displayVisible', 'updateVisible', 'loggingVisible', 'styleVisible', 'optimizationVisible', 'skipScreenSpaceErrorFactor', 'tileDebugLabelsVisible',
+                              'styleString', '_feature', '_tile']);
 
         this._properties = knockout.observable({});
         /**
@@ -683,6 +692,50 @@ define([
          */
         this.pickActive = false;
 
+        var skipLevelOfDetail = knockout.observable();
+        knockout.defineProperty(this, 'skipLevelOfDetail', {
+            get : function() {
+                return skipLevelOfDetail();
+            },
+            set : function(value) {
+                value = Number(value);
+                if (!isNaN(value)) {
+                    skipLevelOfDetail(value);
+                    if (defined(that._tileset)) {
+                        that._tileset.skipLevelOfDetail = skipLevelOfDetail;
+                    }
+                }
+            }
+        });
+        /**
+         * Gets or sets the flag to determine if level of detail skipping should be applied during the traversal
+         * @type {Boolean}
+         * @default true
+         */
+        this.skipLevelOfDetail = true;
+
+        var skipScreenSpaceErrorFactor = knockout.observable();
+        knockout.defineProperty(this, 'skipScreenSpaceErrorFactor', {
+            get : function() {
+                return skipScreenSpaceErrorFactor();
+            },
+            set : function(value) {
+                value = Number(value);
+                if (!isNaN(value)) {
+                    skipScreenSpaceErrorFactor(value);
+                    if (defined(that._tileset)) {
+                        that._tileset.skipScreenSpaceErrorFactor = value;
+                    }
+                }
+            }
+        });
+        /**
+         * Gets or sets the multiplier defining the minimum screen space error to skip
+         * @type {Number}
+         * @default 16
+         */
+        this.skipScreenSpaceErrorFactor = 16;
+
         this._style = undefined;
         this._shouldStyle = false;
         this._definedProperties = ['properties', 'dynamicScreenSpaceError', 'colorBlendMode', 'picking', 'colorize', 'wireframe', 'showBoundingVolumes',
@@ -812,6 +865,8 @@ define([
                     this.dynamicScreenSpaceErrorDensity = tileset.dynamicScreenSpaceErrorDensity;
                     this.dynamicScreenSpaceErrorFactor = tileset.dynamicScreenSpaceErrorFactor;
                     this.colorBlendMode = tileset.colorBlendMode;
+                    this.skipLevelOfDetail = tileset.skipLevelOfDetail;
+                    this.skipScreenSpaceErrorFactor = tileset.skipScreenSpaceErrorFactor;
                 } else {
                     this._properties({});
                 }
@@ -947,6 +1002,13 @@ define([
      */
     Cesium3DTilesInspectorViewModel.prototype.toggleStyle = function() {
         this.styleVisible = !this.styleVisible;
+    };
+
+    /**
+     * Toggles the visibility of the optimization section
+     */
+    Cesium3DTilesInspectorViewModel.prototype.toggleOptimization = function() {
+        this.optimizationVisible = !this.optimizationVisible;
     };
 
     /**
