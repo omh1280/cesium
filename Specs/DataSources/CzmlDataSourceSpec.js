@@ -9,6 +9,7 @@ defineSuite([
         'Core/ClockStep',
         'Core/Color',
         'Core/CornerType',
+        'Core/DistanceDisplayCondition',
         'Core/Ellipsoid',
         'Core/Event',
         'Core/ExtrapolationType',
@@ -45,6 +46,7 @@ defineSuite([
         ClockStep,
         Color,
         CornerType,
+        DistanceDisplayCondition,
         Ellipsoid,
         Event,
         ExtrapolationType,
@@ -418,6 +420,7 @@ defineSuite([
 
     it('CZML adds data for infinite billboard.', function() {
         var sourceUri = 'http://someImage.invalid/';
+        debugger;
         var billboardPacket = {
             billboard : {
                 image : 'image.png',
@@ -453,10 +456,14 @@ defineSuite([
                 },
                 imageSubRegion : {
                     boundingRectangle : [20, 30, 10, 11]
+                },
+                distanceDisplayCondition : {
+                    near : 0.0,
+                    far : 10000.0
                 }
             }
         };
-
+        debugger;
         var dataSource = new CzmlDataSource();
         dataSource.load(makePacket(billboardPacket), {
             sourceUri : sourceUri
@@ -482,6 +489,7 @@ defineSuite([
         expect(entity.billboard.translucencyByDistance.getValue(Iso8601.MINIMUM_VALUE)).toEqual(new NearFarScalar(1.0, 1.0, 10000.0, 0.0));
         expect(entity.billboard.pixelOffsetScaleByDistance.getValue(Iso8601.MINIMUM_VALUE)).toEqual(new NearFarScalar(1.0, 20.0, 10000.0, 30.0));
         expect(entity.billboard.imageSubRegion.getValue(Iso8601.MINIMUM_VALUE)).toEqual(new BoundingRectangle(20, 30, 10, 11));
+        expect(entity.billboard.distanceDisplayCondition.getValue(Iso8601.MINIMUM_VALUE)).toEqual(new DistanceDisplayCondition(0.0, 10000.0));
     });
 
     it('can handle aligned axis expressed as a cartesian', function() {

@@ -460,6 +460,8 @@ define([
             return ColorBlendMode;
         } else if (czmlInterval.hasOwnProperty('cornerType')) {
             return CornerType;
+        } else if (czmlInterval.hasOwnProperty('distanceDisplayCondition')) {
+            return DistanceDisplayCondition;
         } else if (czmlInterval.hasOwnProperty('heightReference')) {
             return HeightReference;
         } else if (czmlInterval.hasOwnProperty('horizontalOrigin')) {
@@ -516,6 +518,8 @@ define([
                 return ColorBlendMode[defaultValue(czmlInterval.colorBlendMode, czmlInterval)];
             case CornerType:
                 return CornerType[defaultValue(czmlInterval.cornerType, czmlInterval)];
+            case DistanceDisplayCondition:
+                return czmlInterval.distanceDisplayCondition;
             case HeightReference:
                 return HeightReference[defaultValue(czmlInterval.heightReference, czmlInterval)];
             case HorizontalOrigin:
@@ -1269,7 +1273,7 @@ define([
         processPacketData(NearFarScalar, billboard, 'translucencyByDistance', billboardData.translucencyByDistance, interval, sourceUri, entityCollection);
         processPacketData(NearFarScalar, billboard, 'pixelOffsetScaleByDistance', billboardData.pixelOffsetScaleByDistance, interval, sourceUri, entityCollection);
         processPacketData(BoundingRectangle, billboard, 'imageSubRegion', billboardData.imageSubRegion, interval, sourceUri, entityCollection);
-        processPacketData(DistanceDisplayCondition, billboard, 'distanceDisplayCondition', billboard.distanceDisplayCondition, interval, sourceUri, entityCollection);
+        processPacketData(DistanceDisplayCondition, billboard, 'distanceDisplayCondition', billboardData.distanceDisplayCondition, interval, sourceUri, entityCollection);
     }
 
     function processBox(entity, packet, entityCollection, sourceUri) {
