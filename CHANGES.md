@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+### 1.35 - 2017-07-05
+* Deprecated
+   * `GoogleEarthImageryProvider` has been deprecated and will be removed in Cesium 1.37, use `GoogleEarthEnterpriseMapsProvider` instead. 
+* 
+
 ### 1.34 - 2017-06-01
 
 * Deprecated
