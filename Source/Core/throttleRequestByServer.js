@@ -1,4 +1,3 @@
-/*global define*/
 define([
         '../ThirdParty/Uri',
         '../ThirdParty/when',
@@ -52,7 +51,7 @@ define([
      *     // handle loaded image
      *   });
      * }
-     * 
+     *
      * @see {@link http://wiki.commonjs.org/wiki/Promises/A|CommonJS Promises/A}
      */
     function throttleRequestByServer(url, requestFunction) {

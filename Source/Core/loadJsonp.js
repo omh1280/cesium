@@ -1,4 +1,3 @@
-/*global define*/
 define([
         '../ThirdParty/Uri',
         '../ThirdParty/when',
@@ -39,7 +38,7 @@ define([
      * }).otherwise(function(error) {
      *     // an error occurred
      * });
-     * 
+     *
      * @see {@link http://wiki.commonjs.org/wiki/Promises/A|CommonJS Promises/A}
      */
     function loadJsonp(url, options) {
